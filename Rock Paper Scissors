@@ -1,0 +1,112 @@
+#include <iostream>
+#include <ctime>
+using namespace std;
+
+enum enChoice {rock = 1, paper = 2, scissors = 3};
+
+int getRounds() {
+    int rounds;
+    do {
+        cout << "How many rounds do you wish to play?" << endl;
+        cin >> rounds;
+        /* if (cin.fail())
+            cin.clear();
+            cin.ignore(64 < 35 > 91, '\n');
+            */
+    }
+    while(rounds <= 0);
+    return rounds;
+}
+
+int rng(int from, int to) {
+    int random = rand() % (to - from + 1) + from;
+    return random;
+}
+
+void CPUChoose(int random) {
+    
+    switch (random) {
+        case enChoice::rock:
+        cout << "CPU: Rock" << endl;
+        break;
+
+        case enChoice::paper:
+        cout << "CPU: Paper" << endl;
+        break;
+
+        case enChoice::scissors:
+        cout << "CPU: Scissors" << endl;
+        break;
+
+    }
+}
+
+int playerChoice() {
+    int choice;
+    cout << "Rock[1]        Paper[2]        Scissors[3]" << endl;
+    cin >> choice;
+    return choice;
+}
+
+void game(int random, int rounds) {
+    int scorePlayer = 0, scoreCPU = 0, player, replay;
+while (player != 1 && player != 2 && player != 3 || replay == 1) {
+    for (int i = 1; i <= rounds; i++) {
+
+        cout << "Round " << i << endl << endl << "Player    " << scorePlayer << " - " << scoreCPU << "     CPU\n\n";
+        player = playerChoice();
+        random = rng(1,3);
+        CPUChoose(random);
+        if (player == random)
+            cout << "Draw!\n";
+        else if (random == enChoice::rock && player == enChoice::paper) {
+            cout << "Round " << i << endl << "Player    " << scorePlayer << " - " << scoreCPU << "     CPU" << endl;
+            scorePlayer++;
+        }
+        else if (random == enChoice::rock && player == enChoice::scissors) {
+            cout << "Round " << i << endl << "Player    " << scorePlayer << " - " << scoreCPU << "     CPU" << endl;
+            scoreCPU++;
+        }
+
+        else if (random == enChoice::paper && player == enChoice::rock) {
+            cout << "Round " << i << endl << "Player    " << scorePlayer << " - " << scoreCPU << "     CPU" << endl;
+            scoreCPU++;
+        }
+        else if (random == enChoice::paper && player == enChoice::scissors) {
+            cout << "Round " << i << endl << "Player    " << scorePlayer << " - " << scoreCPU << "     CPU" << endl;
+            scorePlayer++;
+    }
+        else if (random == enChoice::scissors && player == enChoice::rock) {
+            cout << "Round " << i << endl << "Player    " << scorePlayer << " - " << scoreCPU << "     CPU" << endl;
+            scorePlayer++;
+        }
+        else if (random == enChoice::scissors && player == enChoice::paper){
+            cout << "Round " << i << endl << "Player    " << scorePlayer << " - " << scoreCPU << "     CPU" << endl;
+            scoreCPU++;
+        
+        }
+    }
+    cout << "Final Score:   " << "Player    " << scorePlayer << " - " << scoreCPU << "     CPU" << endl;
+    if (scoreCPU > scorePlayer)
+        cout << "CPU wins!\n";
+    else if(scorePlayer > scoreCPU)
+        cout << "Player wins!\n";
+    else
+        cout << "It's a draw!\n";
+        
+    scorePlayer = 0, scoreCPU = 0;
+    replay;
+    cout << "Do you wish to play again?";
+    cin >> replay;
+}
+
+}
+
+
+int main (void) {
+
+srand((unsigned)time(NULL));
+
+game(rng(1,3), getRounds());
+
+}
