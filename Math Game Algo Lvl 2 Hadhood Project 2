@@ -1,0 +1,182 @@
+#include <iostream>
+using namespace std;
+
+
+enum enDiff {easy = 1, medium = 2, hard = 3, mixD = 4};
+enum enType {add = 1, sub = 2, mult = 3, divide = 4, mixT = 5};
+
+int rng(int from, int to) {
+    int random = rand() % (to - from + 1) + from;
+    return random;
+}
+
+int getRounds() {
+    int rounds;
+    do {
+        cout << "How many questions do you wish to answer?\n";
+        cin >> rounds;
+    } while (rounds <= 0);
+    return rounds;
+}
+
+int getDiff() {
+    int diff;
+    do {
+        cout << "[1]Easy    [2]Medium     [3]Hard     [4]Mix\n\n";
+        cin >> diff;
+    }
+    while (diff < 1 || diff > 4);
+
+    return diff;
+}
+
+int rangeFirst(int diff) {
+    int first, diff1 = diff;
+
+    if (diff == enDiff::mixD)
+        diff1 = rng(1,3);
+
+    switch (diff1) {
+        case enDiff::easy:
+            first = rng(1,10);
+            break;
+            
+        case enDiff::medium:
+            first = rng(11,40);  
+            break;
+
+        case enDiff::hard:
+            first = rng(41,100);
+            break;
+    }
+    return first;
+}
+
+int rangeSecond() {
+    int diff1;
+    int second, diff2 = diff1;
+    switch (diff2) {
+        case enDiff::easy:
+            second = rng(1,10);
+            break;
+            
+        case enDiff::medium:
+            second = rng(11,40);  
+            break;
+
+        case enDiff::hard:
+            second = rng(41,100);
+            break;
+    }
+    return second;
+}
+
+
+
+
+int getType() {
+    int type;
+    cout << "[1]Add     [2]Sub      [3]Mult     [4]Div     [5]Mix\n\n";
+    cin >> type;
+    return type;
+}
+
+
+int result(int first, int second, int type, int tempType) {
+    
+    switch (tempType) {
+        case enType::add:
+            return first + second;
+            break;
+        case enType::sub:
+            return first - second;
+            break;
+        case enType::mult:
+            return first * second;
+            break;
+        case enType::divide:
+            return first / second;
+            break;
+        default:
+            cout << "ERROR--";
+            return 0;
+            
+            
+    }
+}
+
+
+void makeQuiz(int first, int second, int type, int tempType, int diff, int rounds) {
+    int playerResult;
+    float winCounter = 0, loseCounter = 0;
+    for (int i = 1; i <= rounds; i++) {
+        first = rangeFirst(diff);
+        second = rangeSecond();
+        
+
+        if (type == 5)
+            tempType = rng(1,4);
+        else tempType = type;
+        
+        switch (tempType) {
+            case enType::add:
+                cout << "   "<< first << endl;
+                cout << "+  ";
+                cout << second << endl << "________" << endl;
+                break;
+
+            case enType::sub:
+                cout << "   "<< first << endl;
+                cout << "-  ";
+                cout << second << endl << "________" << endl;
+                break;
+
+            case enType::mult:
+                cout << "   "<< first << endl;
+                cout << "*  ";
+                cout << second << endl << "________" << endl;
+                break;
+        
+            case enType::divide:
+                cout << "   "<< first << endl;
+                cout << "/  ";
+                cout << second << endl << "________" << endl;
+                break;
+        }
+        int cpuResult = result(first, second, type, tempType);
+        
+        
+        cin >> playerResult;
+        cout << endl;
+        if (cpuResult == playerResult) {
+            cout << "Correct!\n";
+            winCounter++;
+        }
+        else {
+            cout << "Wrong!\n";
+            cout << "Correct answer: " << cpuResult << endl << endl;
+            loseCounter++;
+        }
+
+                                    }
+        cout << "Total rounds: " << rounds << endl;
+        cout << "You have won " << winCounter << " out of " << rounds << endl;
+        cout << "You have lost " << loseCounter << " out of " << rounds << endl << endl;
+
+
+        if (winCounter >= loseCounter)
+            cout << "You win! " << "(" << (winCounter / rounds) * 100 << "%)\n" ;
+        else
+            cout << "You lose!\n";
+        
+}
+
+int main(void) {
+
+    srand((unsigned)time(NULL));
+
+    int first, second, tempType;
+
+    makeQuiz(first, second, getType(),tempType, getDiff(), getRounds());
+
+}
